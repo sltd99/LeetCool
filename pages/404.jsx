@@ -1,12 +1,9 @@
-export const getStaticProps = () => {
-  return {
-    // Redirect unknown path to home
-    redirect: {
-      destination: "/",
-    },
-  }
-}
+import React from "react"
 
 export default function NotFound() {
-  return null
+  return (
+    <div className="flex h-[calc(100vh-4rem)] items-center justify-center">
+      Sorry dude! The page is not found!
+    </div>
+  )
 }
