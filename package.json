@@ -10,17 +10,22 @@
     "@heroicons/react": "^1.0.3",
     "@tailwindcss/forms": "^0.3.3",
     "axios": "^0.21.1",
+    "chrome-aws-lambda": "^10.1.0",
     "classnames": "^2.3.1",
     "next": "latest",
     "next-auth": "^3.27.3",
-    "playwright-chromium": "^1.13.1",
+    "playwright-core": "^1.13.1",
     "react": "^17.0.2",
+    "react-autosuggest": "^10.1.0",
     "react-dom": "^17.0.2",
+    "react-markdown": "^6.0.3",
     "react-query": "^3.19.4",
+    "react-syntax-highlighter": "^15.4.4",
     "react-table": "^7.7.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.6",
+    "playwright-chromium": "^1.13.1",
     "postcss": "^8.3.5",
     "tailwindcss": "^2.2.4"
   }

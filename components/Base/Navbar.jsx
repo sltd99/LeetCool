@@ -39,7 +39,7 @@ export default function Navbar({ session }) {
               <a
                 className={classNames(
                   item.href === currentRoute
-                    ? "border-indigo-500 text-gray-900"
+                    ? "border-indigo-600 text-indigo-600"
                     : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
                   "inline-flex items-center px-1 pt-1 border-b-2 font-medium"
                 )}

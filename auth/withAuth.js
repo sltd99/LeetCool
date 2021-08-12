@@ -4,6 +4,8 @@ const secret = process.env.SECRET
 
 export default function withAuth(handler) {
   return async (req, res) => {
+    // console.log(req.headers)
+
     try {
       req.auth = await jwt.getToken({ req, secret })
 
@@ -11,7 +13,7 @@ export default function withAuth(handler) {
         return res.status(401).end()
       }
     } catch (ignore) {
-      return res.status(401).end()
+      if (req.origin) return res.status(401).end()
     }
 
     try {
