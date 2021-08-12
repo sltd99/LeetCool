@@ -4,7 +4,6 @@ import withAuth from "../../auth/withAuth"
 
 const chromium = require("chrome-aws-lambda")
 const playwright = require("playwright-core")
-const { chromium: devChromium } = require("playwright-chromium")
 
 const questions = (req, res) => ({
   async get() {
@@ -20,14 +19,11 @@ const questions = (req, res) => ({
 
 export async function getQuestionDetail(questionUrl = "") {
   try {
-    const browser =
-      process.env.NODE_ENV === "production"
-        ? await playwright.chromium.launch({
-            args: chromium.args,
-            executablePath: await chromium.executablePath,
-            headless: chromium.headless,
-          })
-        : await devChromium.launch()
+    const browser = await playwright.chromium.launch({
+      args: chromium.args,
+      executablePath: await chromium.executablePath,
+      headless: chromium.headless,
+    })
 
     const context = await browser.newContext()
     const page = await context.newPage()
