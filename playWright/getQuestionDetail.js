@@ -1,6 +1,5 @@
 const chromium = require("chrome-aws-lambda")
 const playwright = require("playwright-core")
-
 const { chromium: devChromium } = require("playwright-chromium")
 
 export default async function getQuestionDetail(questionUrl = "") {
