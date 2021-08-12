@@ -1,17 +1,14 @@
-const chromium = require("chrome-aws-lambda")
-const playwright = require("playwright-core")
+const playwright = require("playwright-aws-lambda")
 
 export default async function getQuestionDetail(questionUrl = "") {
-  const browser =
-    process.env.NODE_ENV === "production"
-      ? await playwright.chromium.launch({
-          args: chromium.args,
-          executablePath: await chromium.executablePath,
-          headless: chromium.headless,
-        })
-      : await require("playwright-chromium").chromium.launch()
+  let browser = null
 
   try {
+    browser =
+      process.env.NODE_ENV === "production"
+        ? await playwright.launchChromium()
+        : await require("playwright-chromium").chromium.launch()
+
     const context = await browser.newContext()
     const page = await context.newPage()
 
@@ -85,6 +82,8 @@ export default async function getQuestionDetail(questionUrl = "") {
     // TODO Send email to notify if crawler breaks
     console.log("Error", error)
   } finally {
-    await browser.close()
+    if (browser) {
+      await browser.close()
+    }
   }
 }
