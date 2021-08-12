@@ -1,18 +1,17 @@
 const chromium = require("chrome-aws-lambda")
 const playwright = require("playwright-core")
-const { chromium: devChromium } = require("playwright-chromium")
 
 export default async function getQuestionDetail(questionUrl = "") {
-  try {
-    const browser =
-      process.env.NODE_ENV === "production"
-        ? await playwright.chromium.launch({
-            args: chromium.args,
-            executablePath: await chromium.executablePath,
-            headless: chromium.headless,
-          })
-        : await devChromium.launch()
+  const browser =
+    process.env.NODE_ENV === "production"
+      ? await playwright.chromium.launch({
+          args: chromium.args,
+          executablePath: await chromium.executablePath,
+          headless: chromium.headless,
+        })
+      : await require("playwright-chromium").chromium.launch()
 
+  try {
     const context = await browser.newContext()
     const page = await context.newPage()
 
@@ -73,11 +72,8 @@ export default async function getQuestionDetail(questionUrl = "") {
       tags.push(await tagPromise.innerText())
     }
     console.log(tags)
-    //=====================================================================================================
 
-    await page.close()
-    await context.close()
-    await browser.close()
+    //=====================================================================================================
 
     return {
       questionTitle: questionTitle,
@@ -88,5 +84,7 @@ export default async function getQuestionDetail(questionUrl = "") {
   } catch (error) {
     // TODO Send email to notify if crawler breaks
     console.log("Error", error)
+  } finally {
+    await browser.close()
   }
 }
