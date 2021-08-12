@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query"
 import { Hydrate } from "react-query/hydration"
 import { useRouter } from "next/dist/client/router"
 import { getSession } from "next-auth/client"
+import { useEffect } from "react"
 
 MyApp.getInitialProps = async appContext => {
   const session = await getSession(appContext.ctx)
@@ -31,8 +32,16 @@ MyApp.getInitialProps = async appContext => {
 export const InitialSession = createContext(null)
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter()
   const [queryClient] = useState(() => new QueryClient())
+
+  if (typeof window !== "undefined") {
+    const router = useRouter()
+    useEffect(() => {
+      if (router.asPath.endsWith("#")) {
+        router.replace(router.asPath.slice(0, -1))
+      }
+    }, [])
+  }
 
   return (
     <QueryClientProvider client={queryClient}>

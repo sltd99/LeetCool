@@ -8,9 +8,9 @@ import { useRouter } from "next/dist/client/router"
 import { signOut } from "next-auth/client"
 
 const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Daily Questions", href: "/daily", current: false },
-  { name: "Performance", href: "/performance", current: false },
+  { name: "Home", href: "/" },
+  { name: "Daily Questions", href: "/daily" },
+  { name: "Performance", href: "/performance" },
 ]
 
 const user = {
@@ -25,6 +25,8 @@ const userNavigation = [{ name: "Sign out" }]
 export default function Navbar({ session }) {
   const router = useRouter()
 
+  const currentRoute = router.asPath.endsWith("#") ? router.asPath.slice(0, -1) : router.asPath
+
   return (
     <div className="flex justify-between h-16 border-b border-gray-200 px-3">
       <div className="flex">
@@ -36,7 +38,7 @@ export default function Navbar({ session }) {
             <Link key={item.name} href={item.href}>
               <a
                 className={classNames(
-                  router.asPath === item.href
+                  item.href === currentRoute
                     ? "border-indigo-500 text-gray-900"
                     : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
                   "inline-flex items-center px-1 pt-1 border-b-2 font-medium"
