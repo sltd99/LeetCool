@@ -102,14 +102,14 @@ export default function Table() {
           type="text"
           placeholder="search"
           onChange={e => setFilter("title", e.target.value)}
-          className="rounded"
+          className="form-input rounded"
         />
 
-        <select className="rounded">
+        <select className="form-select rounded">
           <option value="">Tags</option>
         </select>
 
-        <select className="rounded">
+        <select className="form-select rounded">
           <option value="">Authors</option>
         </select>
       </div>

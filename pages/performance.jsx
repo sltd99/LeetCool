@@ -1,22 +1,19 @@
-import axios from "axios";
+import axios from "axios"
 import React, { useEffect, useState } from "react"
 
 export default function performance() {
-  const [test, setTest] = useState(null);
-  useEffect(() => {
-    const fetch = async () => {
-      const { data } = await axios.get('/api/questions')
-      setTest(data.question);
-    }
-    fetch();
-  }, [])
+  const [test, setTest] = useState(null)
 
-
-  return <div>
-    {test && <>
-      <p>{ test.questionTitle}</p>
-    <p>{test.diff}</p>
-    {test.questionContentHTML}
-    <p>{ test.tags}</p></>}
-  </div>
+  return (
+    <div>
+      {test && (
+        <>
+          <p>{test.questionTitle}</p>
+          <p>{test.diff}</p>
+          {test.questionContentHTML}
+          <p>{test.tags}</p>
+        </>
+      )}
+    </div>
+  )
 }
