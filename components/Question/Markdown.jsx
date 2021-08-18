@@ -6,35 +6,31 @@ import Button from "../Base/Button"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { dracula as highlighterTheme } from "react-syntax-highlighter/dist/cjs/styles/prism"
 
-export default function TextArea() {
-  const [markdown, setMarkdown] = useState(`
-
-  ### Hey Hey Hey
-
-  ~~~js
-  console.log('It works!')
-  ~~~ 
-  `)
+export default function Markdown({ editable, children = "### Default" }) {
+  const [markdown, setMarkdown] = useState(children)
   const [editing, setEditing] = useState(false)
 
   const autoFocus = useCallback(node => node && node.focus(), [])
 
   return (
-    <div className="w-[40rem]">
-      <div className="flex justify-between items-center mb-3">
-        <div className="text-2xl font-medium">Submit your solution</div>
+    <div>
+      {editable && (
+        <div className="flex justify-between items-center mb-3">
+          <div className="text-2xl font-medium">Submit your solution</div>
 
-        {editing ? (
-          <Button Icon={CodeIcon} onClick={() => setEditing(false)}>
-            Preview
-          </Button>
-        ) : (
-          <Button Icon={PencilAltIcon} onClick={() => setEditing(true)}>
-            Edit
-          </Button>
-        )}
-      </div>
-      <div className="min-h-[20rem]">
+          {editing ? (
+            <Button Icon={CodeIcon} onClick={() => setEditing(false)}>
+              Preview
+            </Button>
+          ) : (
+            <Button Icon={PencilAltIcon} onClick={() => setEditing(true)}>
+              Edit
+            </Button>
+          )}
+        </div>
+      )}
+
+      <div>
         {editing ? (
           <textarea
             ref={autoFocus}
@@ -44,7 +40,7 @@ export default function TextArea() {
             onChange={e => setMarkdown(e.target.value)}
           />
         ) : (
-          markdown && (
+          markdown.trim() && (
             <div className="border px-2 py-2 prose ">
               <ReactMarkdown
                 className="solution"

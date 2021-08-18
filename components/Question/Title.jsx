@@ -1,7 +1,7 @@
 import React from "react"
 import Chip from "@/components/Base/Chip"
 
-export default function Title({ children = "1. Two Sum", difficulty = "Easy" }) {
+export default function Title({ children, difficulty }) {
   return (
     <div className="font-semibold text-3xl text-gray-900">
       <span>{children}</span>

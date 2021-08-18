@@ -9,7 +9,7 @@ import Tags from "@/components/Question/Tags"
 import Description from "@/components/Question/Description"
 import Solutions from "@/components/Question/Solutions"
 import Comments from "@/components/Question/Comments"
-import TextArea from "@/components/Question/TextArea"
+import Mardown from "@/components/Question/Markdown"
 
 const url = process.env.BACKENDURL
 
@@ -121,11 +121,9 @@ export default function upload() {
 </div>`}
       </Description>
 
-      <TextArea />
-
-      <Solutions />
-
-      <Comments />
+      <div className="min-h-[30rem] w-[40rem]">
+        <Mardown editable />
+      </div>
     </div>
   )
 }
