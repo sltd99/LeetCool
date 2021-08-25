@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from "react"
-import axios from "axios"
+import React, { useState } from "react"
 import { useQuery, QueryClient } from "react-query"
 import { dehydrate } from "react-query/hydration"
 
-import AsyncSelect from "react-select/async"
+import Select from "react-select"
 import Title from "@/components/Question/Title"
 import Tags from "@/components/Question/Tags"
 import Description from "@/components/Question/Description"
+import Loader from "@/components/Base/Loader"
 import Solutions from "@/components/Question/Solutions"
 import Comments from "@/components/Question/Comments"
 import Mardown from "@/components/Question/Markdown"
+import { useAxios } from "hooks"
 
-const url = process.env.BACKENDURL
+const axios = useAxios()
 
-// const fetchQuestion = async () => {
-//   const { data } = await axios(url + "/playwright")
+const fetchAllQuestions = async () => {
+  const { data } = await axios.get("/questions")
 
-//   return data
-// }
+  return data.questions.map(({ question_id, question_title, question_difficulty }) => ({
+    value: question_id,
+    label: question_id + ". " + question_title,
+  }))
+}
 
-const fetchTodo = async () => {
-  const { data } = await axios(
-    "https://jsonplaceholder.typicode.com/todos/" + Math.floor(Math.random() * 199 + 1)
-  )
+const fetchSelectedQuestion = async questionId => {
+  const { data } = await axios.get("/questions/" + questionId)
 
   return data
 }
@@ -30,7 +32,7 @@ const fetchTodo = async () => {
 export const getServerSideProps = async () => {
   const queryClient = new QueryClient()
 
-  await queryClient.prefetchQuery("todo", fetchTodo)
+  await queryClient.prefetchQuery("allQuestions", fetchAllQuestions)
 
   return {
     props: {
@@ -39,48 +41,27 @@ export const getServerSideProps = async () => {
   }
 }
 
-const sleep = milliseconds => {
-  return new Promise(resolve => setTimeout(resolve, milliseconds))
-}
-
-const customStyles = {
-  control: (styles, state) => ({
-    // ...provided,
-
-    // "&:hover": {
-    //   borderColor: "#667eea",
-    // },
-
-    ...styles,
-    "&:hover": {
-      borderColor: "black",
-    },
-
-    boxShadow: state.isFocused ? "0 0 0 1px #667eea" : 0,
-    borderColor: state.isFocused ? "#667eea" : "black",
-  }),
-}
-
 export default function upload() {
   // const { data, refetch } = useQuery("todo", fetchTodo)
 
-  const loadOptions = async inputValue => {
-    await sleep(300)
+  const { data } = useQuery("allQuestions", fetchAllQuestions)
 
-    return [
-      { value: "two-sum", label: "1. Two Sum" },
-      { value: "strawberry", label: "Strawberry" },
-      { value: "vanilla", label: "Vanilla" },
-    ].filter(i => i.label.toLowerCase().includes(inputValue.toLowerCase()))
-  }
+  const [questionId, setQuestionId] = useState(null)
+
+  const {
+    data: { question_title, question_difficulty, question_tags, question_content } = {},
+    isLoading,
+  } = useQuery(["selectedQuestion", questionId], () => fetchSelectedQuestion(questionId), {
+    enabled: !!questionId,
+  })
 
   return (
-    <div className="flex flex-col items-center mt-5 space-y-3">
-      <AsyncSelect
+    <div className="flex flex-col items-center mt-5 mb-10 space-y-3">
+      <Select
         instanceId="react-select"
-        className="w-80"
-        cacheOptions
-        loadOptions={loadOptions}
+        className="w-[40rem]"
+        options={data}
+        onChange={question => setQuestionId(question.value)}
         theme={theme => ({
           ...theme,
           colors: {
@@ -90,40 +71,24 @@ export default function upload() {
         })}
       />
 
-      <Title>1. Two Sum</Title>
+      {questionId &&
+        (isLoading ? (
+          <div className="!mt-10 w-[40rem]">{<Loader />}</div>
+        ) : (
+          <>
+            <Title difficulty={question_difficulty}>
+              {questionId}. {question_title}
+            </Title>
 
-      <Tags tags={["Array", "Recursion"]} />
+            <Tags tags={question_tags} />
 
-      <Description>
-        {`<div><p>Given an array of strings <code>strs</code>, group <strong>the anagrams</strong> together. You can return the answer in <strong>any order</strong>.</p >
+            <Description>{question_content}</Description>
 
-<p>An <strong>Anagram</strong> is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.</p >
-
-<p>&nbsp;</p >
-<p><strong>Example 1:</strong></p >
-<pre><strong>Input:</strong> strs = ["eat","tea","tan","ate","nat","bat"]
-<strong>Output:</strong> [["bat"],["nat","tan"],["ate","eat","tea"]]
-</pre><p><strong>Example 2:</strong></p >
-<pre><strong>Input:</strong> strs = [""]
-<strong>Output:</strong> [[""]]
-</pre><p><strong>Example 3:</strong></p >
-<pre><strong>Input:</strong> strs = ["a"]
-<strong>Output:</strong> [["a"]]
-</pre>
-<p>&nbsp;</p >
-<p><strong>Constraints:</strong></p >
-
-<ul>
-        <li><code >1 &lt;= strs.length &lt;= 10<sup>4</sup></code></li>
-        <li><code>0 &lt;= strs[i].length &lt;= 100</code></li>
-        <li><code>strs[i]</code> consists of lower-case English letters.</li>
-</ul>
-</div>`}
-      </Description>
-
-      <div className="min-h-[30rem] w-[40rem]">
-        <Mardown editable />
-      </div>
+            <div className="min-h-[30rem] w-[40rem]">
+              <Mardown editable />
+            </div>
+          </>
+        ))}
     </div>
   )
 }

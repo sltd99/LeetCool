@@ -7,7 +7,9 @@ import { useAxios } from "hooks"
 const axios = useAxios()
 
 const fetchQuestions = async () => {
-  const { data } = await axios.get(process.env.BACKEND_URL + "/questions")
+  const { data } = await axios.get("/questions", {
+    params: { question_is_answered: true },
+  })
   return data
 }
 
