@@ -8,6 +8,9 @@ import { Hydrate } from "react-query/hydration"
 import { useRouter } from "next/dist/client/router"
 import { getSession } from "next-auth/client"
 import { useEffect } from "react"
+import { useAxios } from "hooks"
+
+const axios = useAxios()
 
 MyApp.getInitialProps = async appContext => {
   const session = await getSession(appContext.ctx)
@@ -21,6 +24,9 @@ MyApp.getInitialProps = async appContext => {
 
   const appProps = await App.getInitialProps(appContext)
 
+  const { data } = await axios.post("/users", {params: { email: session.user.email, name: session.user.name },})
+
+  session["user_id"] = data.user_id;
   return {
     ...appProps,
     pageProps: {
@@ -42,7 +48,6 @@ function MyApp({ Component, pageProps }) {
       }
     }, [])
   }
-
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>

@@ -83,12 +83,12 @@ export default function Home() {
       },
     ].concat(
       rawData.questions.map(
-        ({ question_id, question_tags, question_title, question_difficulty, answers}) => ({
+        ({ question_id, question_tags, question_title, question_difficulty, question_answers}) => ({
           questionId: question_id,
           title: question_id + ". " + question_title,
           difficulty: question_difficulty,
           tags: question_tags.join(", "),
-          solutions: answers.map((user) => {
+          solutions: question_answers.map((user) => {
             return {
               name: user.user.user_name
             }

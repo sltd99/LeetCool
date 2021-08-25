@@ -23,9 +23,12 @@ const fetchAllQuestions = async () => {
   }))
 }
 
-const fetchSelectedQuestion = async questionId => {
-  const { data } = await axios.get("/questions/" + questionId)
+const fetchSelectedQuestion = async (questionId, user_id) => {
+  const { data } = await axios.get("/questions/" + questionId, { params: {
+   user_id
+  }})
 
+  console.log(data.question_answers)
   return data
 }
 
@@ -41,7 +44,7 @@ export const getServerSideProps = async () => {
   }
 }
 
-export default function upload() {
+export default function upload({ session}) {
   // const { data, refetch } = useQuery("todo", fetchTodo)
 
   const { data } = useQuery("allQuestions", fetchAllQuestions)
@@ -49,9 +52,9 @@ export default function upload() {
   const [questionId, setQuestionId] = useState(null)
 
   const {
-    data: { question_title, question_difficulty, question_tags, question_content } = {},
+    data: { question_title, question_difficulty, question_tags, question_content, question_answer} = {},
     isLoading,
-  } = useQuery(["selectedQuestion", questionId], () => fetchSelectedQuestion(questionId), {
+  } = useQuery(["selectedQuestion", questionId], () => fetchSelectedQuestion(questionId, session.user_id), {
     enabled: !!questionId,
   })
 
@@ -85,7 +88,7 @@ export default function upload() {
             <Description>{question_content}</Description>
 
             <div className="min-h-[30rem] w-[40rem]">
-              <Mardown editable />
+              <Mardown editable children={ question_answer} questionId={questionId} user_id={ session.user_id} />
             </div>
           </>
         ))}

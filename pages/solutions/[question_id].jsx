@@ -39,7 +39,7 @@ export default function Solution() {
       question_difficulty,
       question_tags,
       question_content,
-      answers,
+      question_answers,
     },
   } = useQuery("question", () => fetchQuestion(question_id))
 
@@ -54,7 +54,7 @@ export default function Solution() {
       <Description>{question_content}</Description>
 
       <div className="flex flex-col space-y-5 min-h-[30rem]">
-        {answers.map(qa => (
+        {question_answers.map(qa => (
           <Solutions key={qa._id} user={qa.user.user_name}>
             {qa.question_answer}
           </Solutions>

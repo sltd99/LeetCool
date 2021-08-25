@@ -2,15 +2,30 @@ import { CodeIcon, PencilAltIcon } from "@heroicons/react/solid"
 import { useState, useCallback } from "react"
 import ReactMarkdown from "react-markdown"
 import Button from "../Base/Button"
-
+import { useAxios } from "hooks"
+import { useRouter } from "next/dist/client/router"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { dracula as highlighterTheme } from "react-syntax-highlighter/dist/cjs/styles/prism"
 
-export default function Markdown({ editable, children = "### Default" }) {
+const axios = useAxios()
+
+export default function Markdown({ editable, children = "", questionId, user_id }) {
   const [markdown, setMarkdown] = useState(children)
   const [editing, setEditing] = useState(false)
-
   const autoFocus = useCallback(node => node && node.focus(), [])
+  const router = useRouter()
+  const submit = async () => {
+    if (markdown.length === 0) { return; }
+    else {
+      const question_answers = {
+        question_answer: markdown,
+        user: user_id,
+        question_date: ""
+      }
+      const saveAnswer = await axios.post('/questions/' + questionId + "/solution", { question_answers });
+      router.push("/solutions/" + questionId)
+    }
+  }
 
   return (
     <div>
@@ -27,6 +42,9 @@ export default function Markdown({ editable, children = "### Default" }) {
               Edit
             </Button>
           )}
+          <Button Icon={PencilAltIcon} onClick={() => submit()}>
+              Submit
+            </Button>
         </div>
       )}
 
