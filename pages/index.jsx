@@ -25,7 +25,6 @@ export async function getServerSideProps() {
 
 export default function Home() {
   const { data: rawData } = useQuery("questions", fetchQuestions)
-
   const columns = useMemo(
     () => [
       {
@@ -66,46 +65,37 @@ export default function Home() {
   )
 
   const data = useMemo(() => {
-    const { question_id } = rawData.daily
-
+    const { daily } = rawData
     return [
       {
-        questionId: question_id.question_id,
-        title: question_id.question_id + ". " + question_id.question_title,
-        difficulty: question_id.question_difficulty,
-        tags: question_id.question_tags.join(", "),
-        solutions: [
-          {
-            name: "Alex",
-          },
-          {
-            name: "Longlong",
-          },
-        ],
-        lastSubmitted: "1/1/2021",
+        questionId: daily.question.question_id,
+        title: daily.question.question_id + ". " + daily.question.question_title,
+        difficulty: daily.question.question_difficulty,
+        tags: daily.question.question_tags.join(", "),
+        solutions: daily.users.map((user) => {
+          return {
+            name: user.user_name
+          }
+         }),
+        lastSubmitted: daily.question.question_last_submit_date,
       },
     ].concat(
       rawData.questions.map(
-        ({ question_id, question_tags, question_title, question_difficulty }) => ({
+        ({ question_id, question_tags, question_title, question_difficulty, answers}) => ({
           questionId: question_id,
           title: question_id + ". " + question_title,
           difficulty: question_difficulty,
           tags: question_tags.join(", "),
-          solutions: [
-            {
-              name: "Alex",
-            },
-            {
-              name: "Longlong",
-            },
-          ],
-          lastSubmitted: "1/1/2021",
+          solutions: answers.map((user) => {
+            return {
+              name: user.user.user_name
+            }
+           }),
+          lastSubmitted: daily.question.question_last_submit_date,
         })
       )
     )
   }, [rawData])
-
-  console.log(rawData)
 
   return <Table data={data} columns={columns} />
 }
