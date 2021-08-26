@@ -14,7 +14,7 @@ import { useAxios } from "hooks"
 const axios = useAxios()
 
 const fetchQuestion = async questionId => {
-  const { data } = await axios.get("/questions/" + questionId)
+  const { data } = await axios.post("/questions/" + questionId)
   return data
 }
 
