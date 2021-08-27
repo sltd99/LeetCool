@@ -35,7 +35,6 @@ export const InitialSession = createContext(null)
 
 function MyApp({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient())
-  console.log(pageProps.session)
   if (typeof window !== "undefined") {
     const router = useRouter()
     useEffect(() => {

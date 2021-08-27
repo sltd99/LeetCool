@@ -24,7 +24,7 @@ const fetchAllQuestions = async () => {
 }
 
 const fetchSelectedQuestion = async (questionId, user_id) => {
-  const { data } = await axios.post("/questions/" + questionId, {user_id})
+  const { data } = await axios.post("/questions/" + questionId, { user_id })
 
   console.log(data.question_answers)
   return data
@@ -42,7 +42,7 @@ export const getServerSideProps = async () => {
   }
 }
 
-export default function upload({ session}) {
+export default function upload({ session }) {
   // const { data, refetch } = useQuery("todo", fetchTodo)
 
   const { data } = useQuery("allQuestions", fetchAllQuestions)
@@ -50,11 +50,21 @@ export default function upload({ session}) {
   const [questionId, setQuestionId] = useState(null)
 
   const {
-    data: { question_title, question_difficulty, question_tags, question_content, question_answer} = {},
+    data: {
+      question_title,
+      question_difficulty,
+      question_tags,
+      question_content,
+      question_answer,
+    } = {},
     isLoading,
-  } = useQuery(["selectedQuestion", questionId], () => fetchSelectedQuestion(questionId, session.user_id), {
-    enabled: !!questionId,
-  })
+  } = useQuery(
+    ["selectedQuestion", questionId],
+    () => fetchSelectedQuestion(questionId, session.user_id),
+    {
+      enabled: !!questionId,
+    }
+  )
 
   return (
     <div className="flex flex-col items-center mt-5 mb-10 space-y-3">
@@ -68,28 +78,30 @@ export default function upload({ session}) {
           colors: {
             ...theme.colors,
             primary: "#667eea",
+            primary75: "#7f9cf5",
+            primary50: "#c3dafe",
+            primary25: "#c3dafe",
           },
         })}
       />
 
-      {questionId &&
-        (isLoading ? (
-          <div className="!mt-10 w-[40rem]">{<Loader />}</div>
-        ) : (
-          <>
-            <Title difficulty={question_difficulty}>
-              {questionId}. {question_title}
-            </Title>
+      {questionId && !isLoading && (
+        <>
+          <Title difficulty={question_difficulty}>
+            {questionId}. {question_title}
+          </Title>
 
-            <Tags tags={question_tags} />
+          <Tags tags={question_tags} />
 
-            <Description>{question_content}</Description>
+          <Description>{question_content}</Description>
 
-            <div className="min-h-[30rem] w-[40rem]">
-              <Mardown editable children={ question_answer} questionId={questionId} user_id={ session.user_id} />
-            </div>
-          </>
-        ))}
+          <div className="min-h-[30rem] w-[40rem]">
+            <Mardown editable questionId={questionId} user_id={session.user_id}>
+              {question_answer}
+            </Mardown>
+          </div>
+        </>
+      )}
     </div>
   )
 }

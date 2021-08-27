@@ -21,7 +21,7 @@ export default function Navbar({ session }) {
   const currentRoute = router.asPath.endsWith("#") ? router.asPath.slice(0, -1) : router.asPath
 
   return (
-    <div className="flex justify-between h-16 border-b border-gray-200 px-3">
+    <div className="sticky top-0 z-50 bg-white flex justify-between h-16 border-b border-gray-200 px-3">
       <div className="flex">
         <div className="flex-shrink-0 flex items-center">
           <img src="/logo.png" />
