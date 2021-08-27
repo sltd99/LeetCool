@@ -23,10 +23,6 @@ MyApp.getInitialProps = async appContext => {
   }
 
   const appProps = await App.getInitialProps(appContext)
-
-  const { data } = await axios.post("/users", {params: { email: session.user.email, name: session.user.name },})
-
-  session["user_id"] = data.user_id;
   return {
     ...appProps,
     pageProps: {
@@ -39,7 +35,7 @@ export const InitialSession = createContext(null)
 
 function MyApp({ Component, pageProps }) {
   const [queryClient] = useState(() => new QueryClient())
-
+  console.log(pageProps.session)
   if (typeof window !== "undefined") {
     const router = useRouter()
     useEffect(() => {
