@@ -68,6 +68,7 @@ export default function Home() {
 
   const data = useMemo(() => {
     const { daily } = rawData
+    console.log(daily)
     return [
       {
         questionId: daily.question.question_id,

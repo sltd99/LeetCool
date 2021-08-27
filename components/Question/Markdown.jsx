@@ -96,7 +96,7 @@ export default function Markdown({ editable, children, questionId, user_id }) {
                 },
               }}
             >
-              {markdown.trim() ? markdown : "#### Please write down your solution!"}
+              {markdown && markdown.trim() ? markdown : "#### Please write down your solution!"}
             </ReactMarkdown>
           </div>
         )}
