@@ -26,7 +26,7 @@ const fetchAllQuestions = async () => {
 const fetchSelectedQuestion = async (questionId, user_id) => {
   const { data } = await axios.post("/questions/" + questionId, { user_id })
 
-  console.log(data.question_answers)
+  console.log(data)
   return data
 }
 

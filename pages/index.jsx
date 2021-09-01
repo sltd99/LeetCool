@@ -68,7 +68,6 @@ export default function Home() {
 
   const data = useMemo(() => {
     const { daily } = rawData
-    console.log(daily)
     return [
       {
         questionId: daily.question.question_id,
@@ -80,7 +79,7 @@ export default function Home() {
             name: user.user_name
           }
          }),
-        lastSubmitted: daily.question.question_last_submit_date,
+        lastSubmitted: daily.question.question_last_submit_date.split("T")[0],
       },
     ].concat(
       rawData.questions.map(
@@ -94,7 +93,7 @@ export default function Home() {
               name: user.user.user_name
             }
            }),
-          lastSubmitted: daily.question.question_last_submit_date,
+          lastSubmitted: daily.question.question_last_submit_date.split("T")[0],
         })
       )
     )
