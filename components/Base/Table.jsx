@@ -3,7 +3,7 @@ import React from "react"
 import { useRouter } from "next/dist/client/router"
 import classNames from "classnames"
 
-export default function Table({ data, columns }) {
+export default function Table({ data, columns, showSearch=true }) {
   const {
     getTableProps,
     getTableBodyProps,
@@ -24,7 +24,7 @@ export default function Table({ data, columns }) {
 
   return (
     <div className="mx-3 my-3">
-      <div className="flex mb-3 space-x-1 ">
+      {showSearch && <div className="flex mb-3 space-x-1 ">
         <input
           type="text"
           placeholder="search"
@@ -39,7 +39,7 @@ export default function Table({ data, columns }) {
         <select className="form-select rounded">
           <option value="">Authors</option>
         </select>
-      </div>
+      </div>}
 
       <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
         <table {...getTableProps()} className="min-w-full divide-y divide-gray-200">
@@ -65,7 +65,13 @@ export default function Table({ data, columns }) {
               return (
                 <tr
                   {...row.getRowProps()}
-                  onClick={() => router.push("/solutions/" + row.original.questionId)}
+                  onClick={() => {
+                    if (row.original.questionId) {
+                      router.push("/solutions/" + row.original.questionId)
+                    } else if (row.original.user_email) {
+                      router.push("/performance/" + row.original.user_id)
+                    }
+                  }}
                   className={classNames(
                     "hover:bg-gray-50",
                     index === 0 && "border-2 border-r-4 border-l-4 border-indigo-500 mx-2"
@@ -83,7 +89,9 @@ export default function Table({ data, columns }) {
                   })}
                 </tr>
               )
+              
             })}
+
           </tbody>
         </table>
       </div>
