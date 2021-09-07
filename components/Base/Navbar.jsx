@@ -1,33 +1,42 @@
-import React from "react"
-import classNames from "classnames"
-import { Fragment } from "react"
-import { Menu, Transition } from "@headlessui/react"
-import Link from "next/link"
-import { CodeIcon } from "@heroicons/react/solid"
-import { useRouter } from "next/dist/client/router"
-import { signOut } from "next-auth/client"
-import Button from "./Button"
+import React from "react";
+import classNames from "classnames";
+import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
+import Link from "next/link";
+import { CodeIcon } from "@heroicons/react/solid";
+import { useRouter } from "next/dist/client/router";
+import { signOut } from "next-auth/client";
+import Button from "./Button";
 
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Performance", href: "/performance" },
-]
+];
 
-const userNavigation = [{ name: "Sign out" }]
+const userNavigation = [{ name: "Sign out" }];
 
 export default function Navbar({ session }) {
-  const router = useRouter()
+  const router = useRouter();
 
-  const currentRoute = router.asPath.endsWith("#") ? router.asPath.slice(0, -1) : router.asPath
+  const currentRoute = router.asPath.endsWith("#")
+    ? router.asPath.slice(0, -1)
+    : router.asPath;
 
   return (
-    <div className="sticky top-0 z-50 bg-white flex justify-between h-16 border-b border-gray-200 px-3">
+    <div
+      className="sticky top-0 z-50 bg-white flex justify-between h-16 border-b border-gray-200 px-3"
+      style={{
+        backgroundImage: "url(/bg.jpg)",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+      }}
+    >
       <div className="flex">
         <div className="flex-shrink-0 flex items-center">
           <img src="/logo.png" />
         </div>
         <div className="s-my-px -ml-8 flex space-x-8">
-          {navigation.map(item => (
+          {navigation.map((item) => (
             <Link key={item.name} href={item.href}>
               <a
                 className={classNames(
@@ -64,7 +73,11 @@ export default function Navbar({ session }) {
         <Menu as="div" className="ml-3 relative -mt-1">
           <div>
             <Menu.Button className="max-w-xs bg-white flex items-center text-sm rounded-full border focus:outline-none">
-              <img className="h-8 w-8 rounded-full" src={session.user.image} alt="" />
+              <img
+                className="h-8 w-8 rounded-full"
+                src={session.user.image}
+                alt=""
+              />
             </Menu.Button>
           </div>
           <Transition
@@ -77,7 +90,7 @@ export default function Navbar({ session }) {
             leaveTo="transform opacity-0 scale-95"
           >
             <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-              {userNavigation.map(item => (
+              {userNavigation.map((item) => (
                 <Menu.Item key={item.name}>
                   {({ active }) => (
                     <button
@@ -97,5 +110,5 @@ export default function Navbar({ session }) {
         </Menu>
       </div>
     </div>
-  )
+  );
 }

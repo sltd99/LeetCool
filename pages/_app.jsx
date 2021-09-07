@@ -9,6 +9,11 @@ import { useRouter } from "next/dist/client/router";
 import { getSession } from "next-auth/client";
 import { useEffect } from "react";
 import { useAxios } from "hooks";
+import bgImg from "../public/bg.jpg";
+import Paper from "@material-ui/core/Paper";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import Fab from "@material-ui/core/Fab";
+import IconButton from "@material-ui/core/IconButton";
 
 const axios = useAxios();
 
@@ -34,7 +39,6 @@ MyApp.getInitialProps = async (appContext) => {
 export const InitialSession = createContext(null);
 
 function MyApp({ Component, pageProps }) {
-  console.log(pageProps.session);
   const [queryClient] = useState(() => new QueryClient());
   if (typeof window !== "undefined") {
     const router = useRouter();
@@ -48,13 +52,21 @@ function MyApp({ Component, pageProps }) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <InitialSession.Provider value={pageProps.session}>
-          <div className="min-h-screen bg-white">
-            <Head>
+          <Paper
+            className="relative min-h-screen m-2 rounded-3xl"
+            elevation={10}
+            rounded
+          >
+            <Head name="top">
               <title>LeetCool</title>
             </Head>
             <Navbar session={pageProps.session} />
+
+            <a href="#top" className="fixed z-50 bottom-20 right-20 ">
+              <ArrowUpwardIcon />
+            </a>
             <Component {...pageProps} />
-          </div>
+          </Paper>
         </InitialSession.Provider>
       </Hydrate>
     </QueryClientProvider>
