@@ -49,8 +49,8 @@ export default function Home() {
         accessor: "tags",
         Cell: ({ value }) => (
           <div className="flex space-x-1">
-            {value.map((tag) => (
-              <Chip label={tag.name} variant="outlined" />
+            {value.map((tag, id) => (
+              <Chip label={tag.name} key={id} variant="outlined" />
             ))}
           </div>
         ),
@@ -63,11 +63,15 @@ export default function Home() {
             {value.map((user) => (
               <span
                 key={user.name}
-                className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-gray-500"
+                className="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-500"
               >
-                <span className="text-xs font-medium leading-none text-white">
-                  {user.name[0]}
-                </span>
+                {user.url == null ? (
+                  <span className="text-xs font-medium leading-none text-white">
+                    {user.name[0]}
+                  </span>
+                ) : (
+                  <img className="rounded-full" src={user.url} alt="" />
+                )}
               </span>
             ))}
           </div>
@@ -97,6 +101,7 @@ export default function Home() {
         }),
         solutions: daily.users.map((user) => {
           return {
+            url: user.user_image_url,
             name: user.user_name,
           };
         }),
@@ -110,6 +115,7 @@ export default function Home() {
           question_title,
           question_difficulty,
           question_answers,
+          question_last_submit_date,
         }) => ({
           questionId: question_id,
           title: question_id + ". " + question_title,
@@ -121,10 +127,11 @@ export default function Home() {
           }),
           solutions: question_answers.map((user) => {
             return {
+              url: user.user.user_image_url,
               name: user.user.user_name,
             };
           }),
-          lastSubmitted: daily.question.question_last_submit_date.split("T")[0],
+          lastSubmitted: question_last_submit_date.split("T")[0],
         })
       )
     );

@@ -19,7 +19,11 @@ export default NextAuth({
       // console.log(token, user, account, profile, isNewUser);
       const {
         data: { user_id },
-      } = await axios.post("/users/", { email: token.email, name: token.name });
+      } = await axios.post("/users/", {
+        email: token.email,
+        name: token.name,
+        image_url: token.picture,
+      });
       return {
         ...token,
         user_id,
