@@ -9,13 +9,8 @@ import { useRouter } from "next/dist/client/router";
 import { getSession } from "next-auth/client";
 import { useEffect } from "react";
 import { useAxios } from "hooks";
-import bgImg from "../public/bg.jpg";
 import Paper from "@material-ui/core/Paper";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import Fab from "@material-ui/core/Fab";
-import IconButton from "@material-ui/core/IconButton";
-
-const axios = useAxios();
 
 MyApp.getInitialProps = async (appContext) => {
   const session = await getSession(appContext.ctx);

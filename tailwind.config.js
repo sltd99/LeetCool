@@ -1,4 +1,4 @@
-const defaultTheme = require("tailwindcss/defaultTheme")
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   mode: "jit",
@@ -9,7 +9,9 @@ module.exports = {
       fontFamily: {
         sans: ["Inter var", ...defaultTheme.fontFamily.sans],
       },
-
+      height: {
+        "90v": "90vh",
+      },
       color: {},
 
       //     color: #e5e7eb;
@@ -53,4 +55,4 @@ module.exports = {
       strategy: "class",
     }),
   ],
-}
+};

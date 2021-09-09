@@ -1,5 +1,5 @@
 import { useRouter } from "next/dist/client/router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Table from "@/components/Base/Table";
 import { useQuery, QueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
