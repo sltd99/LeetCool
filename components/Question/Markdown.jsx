@@ -71,13 +71,13 @@ export default function Markdown({ editable, children, questionId, user_id }) {
         {editing ? (
           <textarea
             ref={autoFocus}
-            rows={10}
+            rows={20}
             className="form-textarea shadow-sm focus:border-indigo-500 block w-full border border-gray-300 rounded-md"
             value={markdown}
             onChange={(e) => setMarkdown(e.target.value)}
           />
         ) : (
-          <div className="border px-2 py-2 prose">
+          <div className="border px-2 py-2 prose max-w-full">
             <ReactMarkdown
               className="solution"
               components={{
