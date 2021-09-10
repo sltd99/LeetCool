@@ -11,7 +11,7 @@ import { useQueryClient } from "react-query";
 const axios = useAxios();
 
 export default function Markdown({ editable, children, questionId, user_id }) {
-  const [markdown, setMarkdown] = useState("");
+  const [markdown, setMarkdown] = useState(children);
   const [editing, setEditing] = useState(false);
   const autoFocus = useCallback((node) => node && node.focus(), []);
 

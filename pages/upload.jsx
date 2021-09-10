@@ -81,7 +81,7 @@ export default function upload({ session }) {
     ["selectedQuestion", questionId],
     () => fetchSelectedQuestion(questionId, session.user_id),
     {
-      enabled: !!questionId,
+      enabled: true,
     }
   );
 
@@ -124,7 +124,7 @@ export default function upload({ session }) {
           </Grid>
 
           <Grid item xs={6}>
-            {questionId && (
+            {questionId && !isLoading && (
               <div className={classes.grid} style={{ margin: "5vh" }}>
                 <Mardown
                   editable
