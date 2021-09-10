@@ -7,6 +7,7 @@ import { CodeIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/dist/client/router";
 import { signOut } from "next-auth/client";
 import Button from "./Button";
+import Logo from "./Logo";
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -32,8 +33,9 @@ export default function Navbar({ session }) {
       }}
     >
       <div className="flex">
-        <div className="flex-shrink-0 flex items-center">
-          <img src="/logo.png" />
+        <div className="flex items-center mr-8">
+          {/* <img src="/logo.png" /> */}
+          <Logo></Logo>
         </div>
         <div className="s-my-px -ml-8 flex space-x-8">
           {navigation.map((item) => (

@@ -54,6 +54,7 @@ function MyApp({ Component, pageProps }) {
           >
             <Head name="top">
               <title>LeetCool</title>
+              <link rel="icon" href="/favicon.ico" />
             </Head>
             <Navbar session={pageProps.session} />
 
