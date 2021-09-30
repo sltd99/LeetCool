@@ -126,10 +126,17 @@ export default function Home() {
             };
           }),
           solutions: question_answers.map((user) => {
-            return {
-              url: user.user.user_image_url,
-              name: user.user.user_name,
-            };
+            if (user.user != null) {
+              return {
+                url: user.user.user_image_url,
+                name: user.user.user_name,
+              };
+            } else {
+              return {
+                url: "",
+                name: "unkonw",
+              };
+            }
           }),
           lastSubmitted: question_last_submit_date.split("T")[0],
         })
